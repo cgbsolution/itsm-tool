@@ -1,0 +1,31 @@
+# Development database (and a mail catcher). The app itself runs with `npm run dev`.
+#   npm run db:up       start
+#   npm run db:down     stop (data is kept in the itsm_dev_pg volume)
+services:
+  db:
+    image: ${POSTGRES_IMAGE:-postgres:17-alpine}
+    container_name: itsm-dev-db
+    environment:
+      POSTGRES_DB: itsm
+      POSTGRES_USER: itsm
+      POSTGRES_PASSWORD: itsm_dev_password
+    ports:
+      - "127.0.0.1:5544:5432"
+    volumes:
+      - itsm_dev_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U itsm -d itsm"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  mail:
+    image: ${MAILPIT_IMAGE:-axllent/mailpit:latest}
+    container_name: itsm-dev-mail
+    ports:
+      - "127.0.0.1:1025:1025"   # SMTP
+      - "127.0.0.1:8025:8025"   # web UI to read captured emails
+    profiles: ["mail"]
+
+volumes:
+  itsm_dev_pg:

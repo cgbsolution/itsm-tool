@@ -1,0 +1,55 @@
+{
+  "name": "itsm-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "On-prem ITSM with CMDB and native endpoint patch management",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:up": "docker compose -f docker-compose.dev.yml up -d",
+    "db:down": "docker compose -f docker-compose.dev.yml down",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "legacy:stage": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/legacy/stage-legacy.ps1",
+    "legacy:import": "tsx scripts/legacy/import-legacy.ts",
+    "legacy:unstage": "docker rm -f itsm-legacy-staging",
+    "legacy:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/legacy/pull-live.ps1",
+    "license:keygen": "tsx scripts/license.ts keygen",
+    "license:issue": "tsx scripts/license.ts issue",
+    "audit:verify": "tsx scripts/audit-verify.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "imapflow": "^2.12.2",
+    "ldapts": "^9.3.6",
+    "lucide-react": "^1.81.0",
+    "mailparser": "^3.15.0",
+    "next": "^16.4.6",
+    "nodemailer": "^10.6.1",
+    "openid-client": "^6.9.1",
+    "pg": "^8.23.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
+    "@types/mailparser": "^3.9.0",
+    "@types/node": "^24.0.0",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.3.3",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.0",
+    "vitest": "^5.1.2"
+  }
+}

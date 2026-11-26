@@ -1,0 +1,12 @@
+node_modules
+.next
+data
+keys
+backups
+coverage
+.env
+.env.*
+!.env.example
+*.dump
+*.tsbuildinfo
+GAP_ASSESSMENT.md

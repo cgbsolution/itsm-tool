@@ -1,0 +1,19 @@
+# HTTPS in front of the app. Two options:
+#  1) Your own certificate (typical on-prem): put fullchain.pem and privkey.pem in deploy/certs/.
+#  2) Internal CA: replace the tls line with "tls internal" (clients must trust Caddy's root CA).
+# Set the host name below to the name users and agents use (it must match APP_URL).
+
+itsm.example.local {
+	tls /certs/fullchain.pem /certs/privkey.pem
+	encode gzip
+	# agents long-poll for up to 30 s
+	reverse_proxy app:3000 {
+		transport http {
+			read_timeout 60s
+		}
+		header_up X-Forwarded-For {remote_host}
+	}
+	request_body {
+		max_size 1GB
+	}
+}
